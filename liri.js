@@ -13,8 +13,6 @@ var client = new twitter(twitterKeys);
 
 var command = process.argv[2];
 
-var variable = process.argv[3];
-
 switch (command) {
 
   case "my-tweets":
@@ -30,6 +28,23 @@ switch (command) {
     break;
 
   case "spotify-this-song":
+  	var song = "";
+  	var nodeArgs = process.argv;
+	for (var i = 3; i < nodeArgs.length; i++) {
+		if (i > 3 && i < nodeArgs.length) {
+			song = song + "+" + nodeArgs[i];
+			console.log(song);
+		} else {
+			song += nodeArgs[i]
+			console.log(song);
+		}
+  	};
+
+  	if (process.argv[3] === undefined) {
+  		song = "The Sign";
+  		console.log(song);
+  	}
+
     break;
 
   case "movie-this":
@@ -62,11 +77,3 @@ switch (command) {
     break;
 
 };
-
-// request()
-
-// function spotifySong()
-
-// function movieThis()
-
-// function doSays()
