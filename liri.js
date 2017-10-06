@@ -7,12 +7,6 @@ var keys = require('./keys.js');
 var twitterKeys = keys.twitterKeys;
 var spotifyKeys = keys.spotifyKeys; 
 
-/* Must take in the following arguments:
-`my-tweets`
-`spotify-this-song`
-`movie-this`
-`do-what-it-says`*/
-
 var command = process.argv[2];
 
 switch (command) {
@@ -43,7 +37,7 @@ switch (command) {
   	};
 
   	if (process.argv[3] === undefined) {
-  		song = "the+sign";
+  		song = "the+sign+ace";
   	}
 
   	spotify.search({ type: 'track', query: song }, function(err, data) {
@@ -59,15 +53,19 @@ switch (command) {
     break;
 
   case "movie-this":
-  	var movie = "";
+  	var movie = "mr.nobody";
   	var nodeArgs = process.argv;
   	for (var i = 3; i < nodeArgs.length; i++) {
   		if (i > 3 && i < nodeArgs.length) {
+  			movie = "";
   			movie = movie + "+" + nodeArgs[i];
-  		} else {
+  		} 
+
+  		else {
   			movie += nodeArgs[i]
   		}
   	};
+
   	var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=40e9cece";
     request(queryURL, function(error, response, body) {
 		if (!error && response.statusCode === 200) {
