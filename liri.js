@@ -3,37 +3,35 @@ var fs = require('fs');
 var twitter = require ('twitter');
 var spotify = require('node-spotify-api');
 var keys = require('./keys.js');
-
 var twitterKeys = keys.twitterKeys;
 var spotifyKeys = keys.spotifyKeys; 
-
+var spotify = new spotify(spotifyKeys);
+var client = new twitter(twitterKeys);
 var command = process.argv[2];
 
 switch (command) {
 
   case "my-tweets":
-  	var client = new twitter(twitterKeys);
     var params = {screen_name: 'JfLiri'};
-	client.get('statuses/user_timeline', params, function(error, tweets, response) {
-	  if (!error) {
-	    for (var i = 0; i < tweets.length; i++) {
-	    	console.log(tweets[i].text);
-	    	console.log(tweets[i].created_at);
-	    };
-	  };
-	});
-    break;
+  	client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  	  if (!error) {
+  	    for (var i = 0; i < tweets.length; i++) {
+  	    	console.log(tweets[i].text);
+  	    	console.log(tweets[i].created_at);
+  	    };
+  	  };
+  	});
+  break;
 
   case "spotify-this-song":
-  	var spotify = new spotify(spotifyKeys)
   	var song = "";
   	var nodeArgs = process.argv;
-	for (var i = 3; i < nodeArgs.length; i++) {
-		if (i > 3 && i < nodeArgs.length) {
-			song = song + "+" + nodeArgs[i];
-		} else {
-			song += nodeArgs[i]
-		}
+  	for (var i = 3; i < nodeArgs.length; i++) {
+  		if (i > 3 && i < nodeArgs.length) {
+  			song = song + "+" + nodeArgs[i];
+  		} else {
+  			song += nodeArgs[i]
+  		}
   	};
 
   	if (process.argv[3] === undefined) {
@@ -43,14 +41,13 @@ switch (command) {
   	spotify.search({ type: 'track', query: song }, function(err, data) {
   		if (err) {
 		    return console.log('Error occurred: ' + err);
-		  } 
-		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
-		console.log("Song: " + data.tracks.items[0].name);
-		console.log("Link: " + data.tracks.items[0].external_urls.spotify); 
-		console.log("Album: " + data.tracks.items[0].album.name);   
-  		});
-
-    break;
+	  } 
+  		console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+  		console.log("Song: " + data.tracks.items[0].name);
+  		console.log("Link: " + data.tracks.items[0].external_urls.spotify); 
+  		console.log("Album: " + data.tracks.items[0].album.name);   
+		});
+  break;
 
   case "movie-this":
   	var movie = "mr.nobody";
@@ -78,17 +75,27 @@ switch (command) {
 			console.log("Plot: " + JSON.parse(body).Plot);
 			console.log("Actors: " + JSON.parse(body).Actors);
 		};
-	});		
-    break;
+	 });		
+  break;
 
   case "do-what-it-says":
 
-    fs(error, response, body) {
-      if(!error) {
-        console.log("working");
-      }
-    }
+   fs.readFile('random.txt', 'utf8', function(err, data) {
+    var split = data.split(',');
+    var newCommand = split[0];
+    var newVariable = split[1];
 
-    break;
+        spotify.search({ type: 'track', query: newVariable }, function(err, data) {
+          if (err) {
+            return console.log('Error occurred: ' + err);
+          } 
+        console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+        console.log("Song: " + data.tracks.items[0].name);
+        console.log("Link: " + data.tracks.items[0].external_urls.spotify); 
+        console.log("Album: " + data.tracks.items[0].album.name);   
+          });
+
+      });
+  break;
 
 };
