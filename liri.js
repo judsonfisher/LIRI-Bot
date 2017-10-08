@@ -82,6 +82,13 @@ switch (command) {
     break;
 
   case "do-what-it-says":
+
+    fs(error, response, body) {
+      if(!error) {
+        console.log("working");
+      }
+    }
+
     break;
 
 };
